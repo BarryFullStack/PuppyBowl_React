@@ -1,12 +1,13 @@
 import { getAllPlayers } from "../API/API"
-import NewPlayersForm from './NewPlayerForm'
+//import NewPlayersForm from './NewPlayerForm'
 import { useState, useEffect } from 'react'
-import { useNavigate } from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 
 const cohortName = "2309-FTB-ET-WEB-PT";
 // Use the APIURL variable for fetch requests
 const APIURL = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}/`;
 
+//(listRefresh, setRefresh)
 export default function AllPLayers () {
     const [players, setPlayers] = useState([])
     const navigate =useNavigate()
@@ -21,23 +22,25 @@ export default function AllPLayers () {
                 const playerList = await getAllPlayers()
                 //console.log(playerList);
                 setPlayers(playerList.data.players);
+                //setRefresh(false)
             } catch (err) {
                 console.error('Ruh roh, trouble fetching players');
             }
         } fetchAllPlayers();
     }, [])
+    //[listRefresh, setRefresh]
 
-    useEffect (()=>{
-        console.log(players)
-    },[players])
+    // useEffect (()=>{
+    //     console.log(players)
+    // },[players])
 
     async function deletePlayer(playerId) {
         try {
             const response = await fetch(`${APIURL}players/${playerId}`, {
                 method: "DELETE",
             });
-            console.log("Player Removed");
-            //location.reload()    
+            console.log('Player Removed');
+            window.location.reload();
         } catch (err) {
             console.error(
                 `Whoops, trouble removing player #${playerId} from the roster!`,
@@ -52,7 +55,7 @@ export default function AllPLayers () {
     )}
     return (
         <div id="all-players-container">
-            <NewPlayersForm />
+            
             {players.map((player) => {
                 return(
                     <section key={player.id}>
@@ -69,6 +72,7 @@ export default function AllPLayers () {
                         <button className="box7" onClick={() =>{
                             const playerId = player.id
                             deletePlayer(playerId)
+                            //setRefresh(true)
                         }}>Remove Player</button>
                     </section>
                 )

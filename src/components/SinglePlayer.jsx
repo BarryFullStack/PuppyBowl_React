@@ -9,7 +9,7 @@ const APIURL = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}/`;
 export default function SinglePlayer () {
     const [player, setPlayer] = useState({})
     const {playerId} = useParams()
-    const [id, setId] = useState()
+    // const [id, setId] = useState()
     
     useEffect(()=>{
         async function getPlayer() {
@@ -27,9 +27,9 @@ export default function SinglePlayer () {
         } getPlayer();
     }, [playerId])
 
-    useEffect (()=>{
-        console.log(player)
-    },[player])
+    // useEffect (()=>{
+    //     console.log(player)
+    // },[player])
 
     if (player.team == null){
         return (

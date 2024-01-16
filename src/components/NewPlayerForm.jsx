@@ -1,22 +1,23 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const cohortName = "2309-FTB-ET-WEB-PT";
 // Use the APIURL variable for fetch requests
 const APIURL = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}/`;
 
-export default function NewPlayersForm () {
-    const [name, setName] = useState('')
-    const [breed, setBreed] = useState('')
-    const [status, setStatus] = useState('')
-    const [teamId, setTeamId] = useState(null)
-    const [imageUrl, setImageUrl] = useState('')
+export default function NewPlayersForm (setRefresh) {
+    const [name, setName] = useState('');
+    const [breed, setBreed] = useState('');
+    const [status, setStatus] = useState('bench');
+    const [teamId, setTeamId] = useState(null);
+    const [imageUrl, setImageUrl] = useState('');
 
+    
     async function handleSubmit (event) {
         event.preventDefault ();
 
         try {
             const response = await fetch (`${APIURL}players`, {
-                method: "Post",
+                method: 'post',
                 headers: {
                     "Content-Type":"application/json"
                 },
@@ -25,16 +26,19 @@ export default function NewPlayersForm () {
                     breed,
                     status,
                     teamId,
-                    imageUrl
+                    imageUrl,
                 }),
             });
-             const result = await response.json()
+            const result = await response.json();
+            console.log ('handleSubmit', result);
+            window.location.reload();
         } catch (error) {
             console.error('Could not add player.');
         }
+        //setRefresh(true);
     }
     return (
-        <footer>
+        <div>
             {/* <h3>The NewPlayersForm Component</h3> */}
             <form id="new-player">
             <label>
@@ -62,6 +66,6 @@ export default function NewPlayersForm () {
             </label>
             <button type="submit" onClick={handleSubmit}>Add Player</button>
         </form>
-        </footer>
+        </div>
     )
 }
